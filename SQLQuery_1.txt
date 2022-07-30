@@ -1,0 +1,34 @@
+--1.1 Retrieve a list of cities
+SELECT 
+    City
+    ,StateProvince
+FROM SalesLT.Address
+GROUP BY City, StateProvince
+ORDER BY StateProvince ASC, City DESC
+--1.2 Retrieve the heaviest products information
+SELECT TOP 10 PERCENT
+    NAME
+    , Weight 
+FROM SalesLT.Product
+ORDER BY Weight DESC 
+--2.1 Filter products by color and size
+SELECT NAME
+    , ProductNumber
+FROM SalesLT.Product
+wHERE Color IN ('black', 'red', 'white') AND Size IN ('S', 'M')
+--2.2 Filter products by color, size and product number
+SELECT ProductID
+    , ProductNumber
+    , Name
+FROM SalesLT.Product
+WHERE ProductNumber LIKE 'BK-[^R]%-[0-9][0-9]' 
+AND (Color IN ('black', 'red', 'white') OR Size IN ('S', 'M'))
+--2.3 Retrieve specific products by Product ID
+SELECT ProductID
+    , ProductNumber
+    , Name
+    , ListPrice
+FROM SalesLT.Product
+    wHERE (Name LIKE '%HL%' OR Name LIKE '%Mountain%')
+    AND LEN (ProductNumber) >= 8
+
