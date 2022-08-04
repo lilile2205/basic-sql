@@ -1,0 +1,49 @@
+-- 1.1 Retrieve customer names and phone numbers
+SELECT CustomerID
+    ,SalesPerson
+    ,CONCAT(Title, LastName) AS CustomerName
+    ,Phone
+FROM SalesLT.Customer
+-- 1.2 Retrieve the heaviest products information
+SELECT TOP 10 PERCENT
+    NAME
+    , Weight 
+    , SellStartDate
+    , SellEndDate
+    , ISNULL(SellEndDate, CURRENT_TIMESTAMP) AS SellEndDate_2
+    , DATEDIFF (day, SellStartDate, ISNULL(SellEndDate, CURRENT_TIMESTAMP))
+FROM SalesLT.Product
+ORDER BY Weight DESC 
+--2.1 Retrieve customer order data
+SELECT CustomerID
+    , CompanyName
+    , CAST (CustomerID AS varchar(50)) + ':' + ' ' + CompanyName AS new_company
+FROM SalesLT.Customer
+-- 2.2 Retrieve a list of sales order revisions
+SELECT SalesOrderNumber
+    , RevisionNumber
+    , OrderDate
+    , SalesOrderNumber + '(' + STR(RevisionNumber, 1) + ')' AS OrderRevision
+    , CONVERT (varchar, OrderDate,102) AS Order_date_2
+FROM SalesLT.SalesOrderHeader
+-- 3.1 
+SELECT CustomerID
+    , FirstName 
+    , MiddleName
+    , LastName
+    , FirstName + ' ' + ISNULL(Middlename, ' ') + LastName AS Full_name
+FROM SalesLT.Customer
+-- 3.2 Retrieve primary contact details
+SELECT CustomerID
+    , Phone
+    , EmailAddress
+    , COALESCE(EmailAddress, Phone) AS PrimaryContact
+FROM SalesLT.Customer
+-- 3.3 
+SELECT CustomerID
+    , FirstName
+    , LastName
+    , CompanyName
+    , Phone
+FROM SalesLT.Customer
+WHERE CustomerID NOT IN (SELECT DISTINCT CustomerID from SalesLT.CustomerAddress)
